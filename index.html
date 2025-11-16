@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Greedy Algorithms — Notes, Flowcharts & Diagrams</title>
+  <style>
+    /* Page layout and colorful templates */
+    :root{
+      --bg:#f5f9ff; --card:#ffffff; --accent:#0b76ff; --accent-2:#7c3aed; --muted:#556070;
+      --glass: rgba(255,255,255,0.65);
+    }
+    *{box-sizing:border-box;font-family:Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial}
+    body{margin:0;background:linear-gradient(180deg,var(--bg),#eef7ff);color:#0f1724}
+    header{background:linear-gradient(90deg,var(--accent),var(--accent-2));padding:28px;color:white}
+    .wrap{max-width:1100px;margin:24px auto;padding:20px}
+    .card{background:var(--card);border-radius:14px;padding:18px;box-shadow:0 8px 30px rgba(9,30,66,0.08);margin-bottom:18px}
+    h1{font-size:28px;margin:0 0 6px}
+    h2{font-size:20px;margin:6px 0}
+    p{color:var(--muted);line-height:1.6}
+    .grid{display:grid;grid-template-columns:1fr 380px;gap:18px;align-items:start}
+    pre{background:#0b1220;color:#e6f0ff;padding:12px;border-radius:8px;overflow:auto}
+    code{font-family:source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace}
+    .badge{display:inline-block;padding:6px 10px;background:linear-gradient(90deg,#fff6, #ffffff00);border-radius:999px;border:1px solid rgba(11,118,255,0.12);color:var(--accent);font-weight:600}
+    .diagram{display:flex;gap:12px;flex-direction:column;align-items:center}
+    .flow-svg{width:100%;height:auto}
+    .timeline{width:100%;height:110px;border-radius:12px;padding:12px;background:linear-gradient(90deg,#fff,#fbfdff);display:flex;align-items:center;gap:12px}
+    .coin-row{display:flex;gap:10px;align-items:center}
+    .coin{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:white}
+    .coin.r10{background:#ff7a59} .coin.r5{background:#ffb020} .coin.r2{background:#3ad29f} .coin.r1{background:#6ba3ff}
+    .btn{display:inline-block;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;text-decoration:none;font-weight:600}
+    footer{margin:20px 0;color:var(--muted);font-size:13px}
+    /* responsive */
+    @media (max-width:900px){.grid{grid-template-columns:1fr;}.wrap{padding:12px}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>Greedy Algorithms — Notes, Flowcharts & Diagrams</h1>
+      <p style="opacity:0.9">Definition, three exam-friendly examples, step-by-step flowcharts, diagrams and ready-to-use HTML/CSS printable notes.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="card">
+      <h2>Quick Definition (Exam-style)</h2>
+      <p><strong>Greedy Algorithm</strong> — an approach that makes the locally optimal (best) choice at each step with the hope it leads to a global optimum. Suitable for problems with <em>greedy-choice property</em> and <em>optimal substructure</em>.</p>
+      <div style="margin-top:12px"><span class="badge">Key idea</span> Choose the best option now.</div>
+    </section>
+
+    <section class="card">
+  <h2>Uses of Greedy Algorithms</h2>
+  <ul style="color:var(--muted); line-height:1.6">
+    <li>Used in optimization problems where decisions must be made step-by-step.</li>
+    <li>Ideal for scheduling problems (task selection, activity selection).</li>
+    <li>Used in network algorithms like Prim’s and Kruskal’s (Minimum Spanning Tree).</li>
+    <li>Applied in Huffman Coding for data compression.</li>
+    <li>Useful in resource allocation problems.</li>
+    <li>Coin change and currency-based problems (if system is canonical).</li>
+  </ul>
+</section>
+
+<section class="card">
+  <h2>Advantages of Greedy Algorithms</h2>
+  <ul style="color:var(--muted); line-height:1.6">
+    <li>Simple and easy to implement.</li>
+    <li>Very fast — usually O(n log n) or O(n).</li>
+    <li>Requires less memory compared to dynamic programming.</li>
+    <li>Provides optimal solutions for many real-world problems.</li>
+    <li>Efficient for large input sizes.</li>
+    <li>Step-by-step decision-making makes debugging easier.</li>
+  </ul>
+</section>
+
+<div class="grid">
+      <div>
+        <section class="card">
+          <h2>General Greedy Flowchart</h2>
+          <div class="diagram" style="border:4px solid #7c3aed; padding:22px; border-radius:20px; background:#f5f3ff;
+background-image: linear-gradient(145deg, #ffffff, #e6e0ff);
+box-shadow: 8px 8px 20px #bdb5d6, -8px -8px 20px #ffffff;">
+            <!-- SVG flowchart -->
+            <svg class="flow-svg" viewBox="0 0 900 720" xmlns="http://www.w3.org/2000/svg" role="img" style="max-height:700px; background:#ffffff; border:2px solid #d0d0ff; border-radius:12px;">
+
+              <!-- START -->
+              <rect x="360" y="20" width="200" height="55" rx="10" fill="#e6f0ff" stroke="#5a6bff" stroke-width="2" />
+              <text x="460" y="55" font-size="18" text-anchor="middle" fill="#1e2a78">START</text>
+
+              <!-- Arrow -->
+              <line x1="460" y1="75" x2="460" y2="130" stroke="#333" stroke-width="2" />
+              <polygon points="460,130 452,118 468,118" fill="#333" />
+
+              <!-- INITIALIZE -->
+              <rect x="260" y="130" width="400" height="70" rx="10" fill="#eef4ff" stroke="#5a6bff" stroke-width="2" />
+              <text x="460" y="170" font-size="17" text-anchor="middle" fill="#1e2a78">Initialize Solution & Available Choices</text>
+
+              <!-- Arrow -->
+              <line x1="460" y1="200" x2="460" y2="260" stroke="#333" stroke-width="2" />
+              <polygon points="460,260 452,248 468,248" fill="#333" />
+
+              <!-- DECISION DIAMOND -->
+              <polygon points="460,260 540,330 460,400 380,330" fill="#ffffff" stroke="#5a6bff" stroke-width="2" />
+              <text x="460" y="335" font-size="17" text-anchor="middle" fill="#1e2a78">Choices Available?</text>
+
+              <!-- YES ARROW DOWN -->
+              <line x1="460" y1="400" x2="460" y2="455" stroke="#333" stroke-width="2" />
+              <polygon points="460,455 452,445 468,445" fill="#333" />
+
+              <!-- PROCESS 1 -->
+              <rect x="260" y="455" width="400" height="70" rx="10" fill="#eef4ff" stroke="#5a6bff" stroke-width="2" />
+              <text x="460" y="495" font-size="17" text-anchor="middle" fill="#1e2a78">Pick Best (Greedy) Choice</text>
+
+              <!-- Arrow -->
+              <line x1="460" y1="525" x2="460" y2="580" stroke="#333" stroke-width="2" />
+              <polygon points="460,580 452,570 468,570" fill="#333" />
+
+              <!-- PROCESS 2 -->
+              <rect x="260" y="580" width="400" height="70" rx="10" fill="#eef4ff" stroke="#5a6bff" stroke-width="2" />
+              <text x="460" y="620" font-size="17" text-anchor="middle" fill="#1e2a78">Add to Solution & Update Choices</text>
+
+              <!-- LOOP BACK -->
+              <line x1="460" y1="650" x2="460" y2="690" stroke="#333" stroke-width="2" />
+              <line x1="460" y1="690" x2="300" y2="690" stroke="#333" stroke-width="2" />
+              <line x1="300" y1="690" x2="300" y2="330" stroke="#333" stroke-width="2" />
+              <line x1="300" y1="330" x2="380" y2="330" stroke="#333" stroke-width="2" />
+              <polygon points="380,330 370,322 370,338" fill="#333" />
+
+              <!-- NO ARROW RIGHT -->
+              <line x1="540" y1="330" x2="700" y2="330" stroke="#333" stroke-width="2" />
+              <polygon points="700,330 690,322 690,338" fill="#333" />
+
+              <!-- RETURN SOLUTION -->
+              <rect x="700" y="295" width="180" height="70" rx="10" fill="#e6f0ff" stroke="#5a6bff" stroke-width="2" />
+              <text x="790" y="337" font-size="17" text-anchor="middle" fill="#1e2a78">RETURN Solution</text>
+
+            </svg>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Example 1 — Coin Change (Indian coins)</h2>
+          <p>Greedy strategy: pick the largest coin possible at each step.</p>
+          <div class="coin-row" style="margin-top:10px">
+            <div class="coin r10">₹10</div>
+            <div class="coin r5">₹5</div>
+            <div class="coin r2">₹2</div>
+            <div class="coin r1">₹1</div>
+          </div>
+          <p style="margin-top:10px">Pseudocode (simple):</p>
+          <pre><code>coins = [10, 5, 2, 1]
+function minCoins(amount):
+  count = 0
+  for coin in coins:
+    while amount >= coin:
+      amount -= coin
+      count += 1
+  return count
+
+// Example: amount = 28 -> 10,10,5,2,1 = 5 coins</code></pre>
+        </section>
+
+        <section class="card">
+          <h2>Example 2 — Activity Selection</h2>
+          <p>Sort activities by finish time; pick earliest-finishing activity that starts after the last picked activity's finish.</p>
+
+          <!-- timeline diagram -->
+          <div class="timeline" aria-hidden>
+            <div style="flex:1"> 
+              <!-- simple bar marks -->
+              <svg width="100%" height="80" viewBox="0 0 500 80" preserveAspectRatio="none">
+                <!-- time axis -->
+                <line x1="20" y1="70" x2="480" y2="70" stroke="#d6e6ff" stroke-width="2" />
+                <!-- activities as colored blocks -->
+                <rect x="30" y="18" width="120" height="28" rx="6" fill="#7c3aed" opacity="0.92"/>
+                <text x="90" y="36" font-size="12" text-anchor="middle" fill="white">A1 (1-4)</text>
+
+                <rect x="100" y="36" width="90" height="28" rx="6" fill="#0b76ff" opacity="0.92"/>
+                <text x="145" y="54" font-size="12" text-anchor="middle" fill="white">A2 (3-5)</text>
+
+                <rect x="220" y="20" width="70" height="28" rx="6" fill="#ff7a59" opacity="0.92"/>
+                <text x="255" y="38" font-size="12" text-anchor="middle" fill="white">A4 (5-7)</text>
+
+                <rect x="320" y="12" width="90" height="28" rx="6" fill="#3ad29f" opacity="0.92"/>
+                <text x="365" y="30" font-size="12" text-anchor="middle" fill="white">A5 (8-9)</text>
+              </svg>
+            </div>
+          </div>
+
+          <p style="margin-top:12px">Pseudocode:</p>
+          <pre><code>function activitySelection(start[], finish[], n):
+  sort activities by finish time
+  select first activity
+  last_finish = finish[0]
+  for i from 1 to n-1:
+    if start[i] >= last_finish:
+      select activity i
+      last_finish = finish[i]</code></pre>
+        </section>
+
+        <section class="card">
+          <h2>Example 3 — Fractional Knapsack</h2>
+          <p>Pick items in descending order of value/weight ratio. If the next item doesn't fully fit, take the fraction that fits.</p>
+          <div style="margin-top:10px">
+            <svg width="100%" height="120" viewBox="0 0 520 120">
+              <!-- capacity bar -->
+              <rect x="20" y="20" width="480" height="28" rx="8" fill="#eef6ff" stroke="#d6e8ff" />
+              <!-- items visualized as segments -->
+              <rect x="20" y="20" width="160" height="28" rx="6" fill="#ffb020"/>
+              <text x="100" y="38" font-size="12" text-anchor="middle" fill="#072036">I1 full</text>
+
+              <rect x="180" y="20" width="140" height="28" rx="6" fill="#7c3aed"/>
+              <text x="250" y="38" font-size="12" text-anchor="middle" fill="white">I2 full</text>
+
+              <rect x="320" y="20" width="80" height="28" rx="6" fill="#3ad29f"/>
+              <text x="360" y="38" font-size="12" text-anchor="middle" fill="white">I3 partial</text>
+            </svg>
+          </div>
+
+          <p style="margin-top:12px">Pseudocode:</p>
+          <pre><code>function fractionalKnapsack(W, items):
+  sort items by value/weight descending
+  totalValue = 0
+  for item in items:
+    if item.weight <= W:
+      W -= item.weight
+      totalValue += item.value
+    else:
+      fraction = W / item.weight
+      totalValue += item.value * fraction
+      break
+  return totalValue</code></pre>
+        </section>
+
+      </div><!-- left column -->
+
+      <aside>
+        <section class="card">
+          <h2>Printable Summary Card</h2>
+          <p style="margin-bottom:10px">A compact, printable summary you can copy into a single slide or a one-page note.</p>
+          <div style="padding:12px;border-radius:10px;background:linear-gradient(180deg,#fff,#f7fbff);border:1px solid #eef6ff">
+            <strong>Greedy Algorithm — 3 steps</strong>
+            <ol style="color:var(--muted)">
+              <li>Identify a greedy choice (what seems best now)</li>
+              <li>Prove (or check) greedy-choice property / optimal substructure</li>
+              <li>Take choice, update problem, repeat</li>
+            </ol>
+            <div style="margin-top:8px"><em>Common problems:</em> Activity selection, Fractional knapsack, Huffman coding, Minimum spanning trees (Prim/Kruskal), Coin change (with canonical coin systems).</div>
+          </div>
+          <div style="margin-top:14px;text-align:center">
+            <a class="btn" href="#download" onclick="downloadHTML()">Download HTML</a>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Ready-to-use Code (Python)</h2>
+          <p>Paste into any Python file and run.</p>
+          <pre><code># Coin change (greedy) - assumes canonical coin system
+coins = [10,5,2,1]
+def min_coins(amount):
+    count = 0
+    for c in coins:
+        count += amount // c
+        amount = amount % c
+    return count
+
+# Activity selection
+def activity_selection(activities):
+    # activities = list of (start, finish)
+    activities.sort(key=lambda x: x[1])
+    res = [activities[0]]
+    last_finish = activities[0][1]
+    for s,f in activities[1:]:
+        if s >= last_finish:
+            res.append((s,f)); last_finish = f
+    return res
+
+# Fractional knapsack
+def fractional_knapsack(cap, items):
+    # items = list of (value, weight)
+    items = sorted(items, key=lambda x: x[0]/x[1], reverse=True)
+    val = 0.0
+    for v,w in items:
+        if cap >= w:
+            cap -= w; val += v
+        else:
+            val += v * (cap / w)
+            break
+    return val</code></pre>
+        </section>
+
+        <section class="card">
+          <h2>Notes & Tips (Exam)</h2>
+          <ul style="color:var(--muted)">
+            <li>Greedy works only when local choices lead to a global optimum — otherwise counterexamples occur.</li>
+            <li>To prove greedy correctness, use an exchange argument or show optimal substructure.</li>
+            <li>For coin change, greedy fails on some coin systems (e.g., {1,3,4} for amount 6).</li>
+          </ul>
+        </section>
+      </aside>
+    </div>
+
+    <footer>
+      <div class="card" style="text-align:center">Want this as a downloadable single HTML file or a PDF/Word? Click <a href="#download" onclick="downloadHTML()">Download HTML</a> to get the file, or tell me which format you prefer.</div>
+    </footer>
+  </main>
+
+  <script>
+    function downloadHTML(){
+      const blob = new Blob([document.documentElement.outerHTML], {type: 'text/html'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'greedy-algorithms-notes.html';
+      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>
